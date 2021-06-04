@@ -134,6 +134,10 @@ string rand_string(string str,string key,int start,Rng* dice)
 }
 int main(int argc,char ** argv)
 {
+	if (argc < 2) {
+		//technicaly this is valid behavior as we just print nothing
+		exit(0);
+	}
 	//set up our constants
 	Rng dice = Rng();
 	string key = "/_=+-*/abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,()[]!?#;\"\'\\*<>{}"; 	
@@ -141,13 +145,13 @@ int main(int argc,char ** argv)
 	string found = "";
 	string parsed = parse(argc,argv,&parse_no_color);
 	string before = "";
-	
+	int sleep_time = 60000/parsed.length();	
 	for (int i = 0;i<parsed.length();i++)
 	{
 		before += key[dice.Range(0,key.length()-1)];
 		cout << before << '\r';
 		flush(cout);
-		usleep(10000);
+		usleep(sleep_time);
 	}
 	for (int i = 0;i<parsed.length();i++)
 	{
@@ -155,7 +159,7 @@ int main(int argc,char ** argv)
 		cout << found + "\r";
 		flush(cout);
 		found[i]=parsed[i];
-		usleep(10000);
+		usleep(sleep_time);
 	}
 	cout << "\r";
 	flush(cout);
